@@ -11,6 +11,7 @@ import {
   Text,
   View
 } from 'react-native';
+import MapView from 'react-native-maps';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
@@ -29,15 +30,34 @@ export default class App extends Component<{}> {
         <Text style={styles.instructions}>
           To get started, edit App.js
         </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
+        <MapView
+        style={styles.map}
+        initialRegion={{
+          latitude: -8.0536907,
+          longitude: -34.9030814,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }}>
+          <MapView.Marker
+          coordinate={{
+            latitude: -8.0536907,
+            longitude: -34.9030814,
+          }}
+          />
+        </MapView>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  map:{
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    position: 'absolute',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
