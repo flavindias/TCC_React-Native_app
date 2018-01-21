@@ -14,25 +14,41 @@ import {
 } from 'react-native';
 import MapView from 'react-native-maps';
 
-export default class MapScene extends Component<{}> {
-
-  // variável do react que armazena o estado da aplicação e que toda vez que é alterada chama o método render()
+class MapScene extends Component<{}> {
+// variável do react que armazena o estado da aplicação e que toda vez que é alterada chama o método render()
   state = {
-    locals: [
+      data: [],
+      error: null
+    };
 
-    ],
+  
 
+  componentDidMount() {
+    this.makeRemoteRequest();
+  }
+
+  makeRemoteRequest = () => {
+    const { page } = this.state;
+    const url = `http://api.tcc.flavindias.com.br/locals`;
+
+    fetch(url)
+      .then(res => res.json())
+      .then(res => {
+        this.setState({
+          data: page === 1 ? res.result.locals : [...this.state.data, ...res.result.locals],
+          error: res.error || null,
+          loading: false,
+          refreshing: false
+        });
+      })
+      .catch(error => {
+
+      });
   };
 
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
-        </Text>
         <MapView
         style={styles.map}
         initialRegion={{
@@ -48,6 +64,15 @@ export default class MapScene extends Component<{}> {
           }}
           image={require('../assets/userPin.png')}
           />
+          {this.state.data.map(item => (
+          <MapView.Marker
+          coordinate={{
+            latitude: parseFloat(item.address.lat),
+            longitude: parseFloat(item.address.lng)
+          }}
+          image={require('../assets/localPin.png')}
+    />
+  ))}
         </MapView>
       </View>
     );

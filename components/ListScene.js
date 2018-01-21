@@ -87,6 +87,7 @@ class ListScene extends Component {
         style={{
           paddingVertical: 20,
           borderTopWidth: 1,
+          bottom: 0,
           borderColor: "#CED0CE"
         }}
       >
@@ -97,7 +98,7 @@ class ListScene extends Component {
 
   render() {
     return (
-      <List containerStyle={{ borderTopWidth: 0, borderBottomWidth: 0 }}>
+      <List containerStyle={{ borderTopWidth: 0, borderBottomWidth: 0, bottom: 0 }}>
         <FlatList
           data={this.state.data}
           renderItem={({ item }) => (
