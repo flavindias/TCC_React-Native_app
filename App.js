@@ -1,7 +1,7 @@
 /**
- * Sample React Native App
+ * Turismo
  * https://github.com/facebook/react-native
- * @flow
+ * Flaviano Dias - @flavindias
  */
 
 import React, { Component } from 'react';
@@ -9,9 +9,11 @@ import {
   Platform,
   StyleSheet,
   Text,
-  View
+  View,
+  NavigatorIOS
 } from 'react-native';
-import MapView from 'react-native-maps';
+import MapScene from './components/MapScene';
+import ListScene from './components/ListScene';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
@@ -20,58 +22,52 @@ const instructions = Platform.select({
     'Shake or press menu button for dev menu',
 });
 
+
 export default class App extends Component<{}> {
+
+  // variável do react que armazena o estado da aplicação e que toda vez que é alterada chama o método render()
+  state = {
+    locals: [
+
+    ],
+
+  };
+  constructor(props) {
+    super(props)
+    //Be sure to add this line in the constructor, or the "this" in method _onRightButtonPress will reference to the object itself.
+    this._onLeftButtonPress = this._onLeftButtonPress.bind(this)
+  }
+
+
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
-        </Text>
-        <MapView
-        style={styles.map}
-        initialRegion={{
-          latitude: -8.0536907,
-          longitude: -34.9030814,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}>
-          <MapView.Marker
-          coordinate={{
-            latitude: -8.0536907,
-            longitude: -34.9030814,
-          }}
-          />
-        </MapView>
-      </View>
+      <NavigatorIOS ref="nav"
+        style = {styles.container}
+        initialRoute= {{
+          component: MapScene,
+          title: "Mapa turístico",
+          leftButtonIcon: require('./assets/about.png'),
+          rightButtonIcon: require('./assets/list.png'),
+          onLeftButtonPress: this._onLeftButtonPress,
+          onRightButtonPress: this._onLeftButtonPress
+        }}/>
     );
+  }
+  _onLeftButtonPress() {
+    this.refs.nav.push({
+      title: "Pontos turísticos",
+      component: ListScene
+    })
   }
 }
 
 const styles = StyleSheet.create({
-  map:{
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    position: 'absolute',
-  },
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+  scene: {
+    padding: 10,
+    paddingTop: 74,
+    flex: 1,
+  }
 });
