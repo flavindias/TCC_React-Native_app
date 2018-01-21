@@ -98,12 +98,14 @@ class ListScene extends Component {
 
   render() {
     return (
-      <List containerStyle={{ borderTopWidth: 0, borderBottomWidth: 0, bottom: 0 }}>
+      <List containerStyle={{ borderTopWidth: 0, borderBottomWidth: 0, flex:1, bottom: 0 }}>
         <FlatList
           data={this.state.data}
           renderItem={({ item }) => (
             <ListItem
+              key={item.id}
               roundAvatar
+
               title={item.name}
               subtitle={item.site}
               avatar={{ uri: item.thumb }}

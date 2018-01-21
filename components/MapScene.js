@@ -66,6 +66,7 @@ class MapScene extends Component<{}> {
           />
           {this.state.data.map(item => (
           <MapView.Marker
+          key={item.id}
           coordinate={{
             latitude: parseFloat(item.address.lat),
             longitude: parseFloat(item.address.lng)
